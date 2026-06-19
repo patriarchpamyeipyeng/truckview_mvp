@@ -9,10 +9,50 @@ class AppTheme {
     primaryColor: primaryBlue,
     scaffoldBackgroundColor: background,
     fontFamily: 'Poppins',
+
+    colorScheme: const ColorScheme.light(
+      primary: primaryBlue,
+      secondary: accentOrange,
+    ),
+
     appBarTheme: const AppBarTheme(
       backgroundColor: primaryBlue,
       foregroundColor: Colors.white,
       centerTitle: true,
+      elevation: 0,
+    ),
+
+    cardTheme: CardTheme(
+      color: Colors.white,
+      elevation: 6,
+      shadowColor: Colors.black12,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    ),
+
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: accentOrange,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+      ),
+    ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 14,
+      ),
     ),
   );
 }

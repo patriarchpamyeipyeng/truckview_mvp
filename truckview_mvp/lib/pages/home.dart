@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+import 'package:truckview_mvp/pages/request_service.dart' show ServicesPage;
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0A1F44),
+
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0A1F44),
+        elevation: 0,
+        title: const Text(
+          "TruckView Mobile",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0xFF0A1F44),
+              ),
+              child: Text(
+                "TruckView Menu",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
+              onTap: () => Navigator.pop(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.build),
+              title: const Text("Services"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ServicesPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.contact_phone),
+              title: const Text("Contact"),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            const Text(
+              "Welcome Back 👋",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 5),
+
+            const Text(
+              "We fix all vehicle types!",
+              style: TextStyle(color: Colors.white70),
+            ),
+
+            const SizedBox(height: 25),
+
+            // Service cards (Figma style)
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                children: const [
+                  ServiceCard(title: "Engine Repair", icon: Icons.settings),
+                  ServiceCard(title: "Diagnostics", icon: Icons.car_repair),
+                  ServiceCard(title: "Towing", icon: Icons.local_shipping),
+                  ServiceCard(title: "Battery", icon: Icons.battery_charging_full),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 🔧 Reusable Card
+class ServiceCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+
+  const ServiceCard({
+    super.key,
+    required this.title,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 40, color: const Color(0xFFFF7A00)),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+}
