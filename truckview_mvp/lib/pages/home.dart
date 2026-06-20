@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:truckview_mvp/pages/login.dart';
+import 'package:truckview_mvp/pages/profile.dart';
 import 'package:truckview_mvp/pages/services.dart';
 import 'package:truckview_mvp/pages/request_service.dart';
 
@@ -52,6 +54,31 @@ class HomePage extends StatelessWidget {
               title: const Text("Contact"),
               onTap: () {},
             ),
+            ListTile(
+  leading: const Icon(Icons.logout),
+  title: const Text("Logout"),
+  onTap: () {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginPage(),
+      ),
+      (route) => false,
+    );
+  },
+),
+ListTile(
+  leading: const Icon(Icons.person),
+  title: const Text("Profile"),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ProfilePage(),
+      ),
+    );
+  },
+),
           ],
         ),
       ),
