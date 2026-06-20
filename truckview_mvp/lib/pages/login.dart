@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:truckview_mvp/pages/home.dart' show HomePage;
+import 'package:truckview_mvp/pages/home.dart' ;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -102,11 +102,18 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           onPressed: () {
-                              Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => const HomePage()),
-                         );
-                          },
+  if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please fill all fields")),
+    );
+    return;
+  }
+
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const HomePage()),
+  );
+},
                           child: const Text(
                             "Login",
                             style: TextStyle(fontSize: 16),

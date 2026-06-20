@@ -23,6 +23,7 @@ class _SplashPageState extends State<SplashPage> {
           builder: (context) => const LoginPage(),
         ),
       ),
+      
     );
   }
 
@@ -32,44 +33,44 @@ class _SplashPageState extends State<SplashPage> {
       backgroundColor: const Color(0xFF0A1F44),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          const SizedBox(height: 40),
 
-            Icon(
-              Icons.local_shipping,
-              size: 100,
-              color: Colors.orange,
-            ),
+CircularProgressIndicator(
+  color: Colors.orange,
+),
 
-            SizedBox(height: 20),
+const SizedBox(height: 40),
 
-            Text(
-              "TruckView Logistics",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            SizedBox(height: 10),
-
-            Text(
-              "We Fix All Vehicle Types!",
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 16,
-              ),
-            ),
-
-            SizedBox(height: 40),
-
-            CircularProgressIndicator(
-              color: Colors.orange,
-            ),
-          ],
+SizedBox(
+  width: 220,
+  child: ElevatedButton(
+    onPressed: () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
         ),
+      );
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.orange,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
+    child: const Text(
+      "Get Started",
+      style: TextStyle(
+        fontSize: 16,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+),
       ),
     );
+    ),
   }
 }
