@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:truckview_mvp/pages/contact.dart';
 import 'package:truckview_mvp/pages/login.dart';
 import 'package:truckview_mvp/pages/profile.dart';
 import 'package:truckview_mvp/pages/services.dart';
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color(0xFF0A1F44),
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A1F44),
+        backgroundColor: const Color.fromARGB(255, 235, 121, 15),
         elevation: 0,
         title: const Text(
           "TruckView Mobile",
@@ -21,92 +22,46 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF0A1F44),
-              ),
-              child: Text(
-                "TruckView Menu",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text("Home"),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              leading: const Icon(Icons.build),
-              title: const Text("Services"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ServicesPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.contact_phone),
-              title: const Text("Contact"),
-              onTap: () {},
-            ),
-            ListTile(
-  leading: const Icon(Icons.logout),
-  title: const Text("Logout"),
-  onTap: () {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const LoginPage(),
-      ),
-      (route) => false,
-    );
-  },
-),
-ListTile(
-  leading: const Icon(Icons.person),
-  title: const Text("Profile"),
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const ProfilePage(),
-      ),
-    );
-  },
-),
-          ],
-        ),
-      ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
         
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
 
-            const Text(
-              "Welcome Back 👋",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+    Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Text(
+            "Welcome Back 👋",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
+          ),
 
-            const SizedBox(height: 5),
+          SizedBox(height: 5),
 
-            const Text(
-              "We fix all vehicle types!",
-              style: TextStyle(color: Colors.white70),
+          Text(
+            "Your satisfaction is our clarion call",
+            style: TextStyle(
+              color: Colors.black54,
             ),
+          ),
+        ],
+      ),
+    ),
 
-            const SizedBox(height: 25),
+    const SizedBox(height: 20),
 
             // Service cards (Figma style)
             Expanded(
@@ -146,16 +101,29 @@ class ServiceCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 40, color: const Color(0xFFFF7A00)),
+          Icon(
+            icon,
+            size: 40,
+            color: Color(0xFFFF7A00),
+          ),
           const SizedBox(height: 10),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),

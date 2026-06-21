@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:truckview_mvp/pages/home.dart' ;
 import 'package:truckview_mvp/pages/forgot_password.dart';
 import 'package:truckview_mvp/pages/register.dart';
+import 'package:truckview_mvp/pages/main_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -134,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Navigator.pushReplacement(
     context,
-    MaterialPageRoute(builder: (context) => const HomePage()),
+    MaterialPageRoute(builder: (context) => const MainScreen()),
   );
 },
                           child: const Text(
