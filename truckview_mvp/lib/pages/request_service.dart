@@ -66,7 +66,14 @@ class _RequestServiceState extends State<RequestService> {
 
       appBar: AppBar(
         backgroundColor: const Color(0xFF0A1F44),
-        title: const Text("Request Service"),
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("Request Service",
+                  style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
 
       body: SingleChildScrollView(

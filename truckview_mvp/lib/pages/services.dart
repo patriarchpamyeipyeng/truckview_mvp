@@ -123,7 +123,7 @@ Widget serviceTapCard(
     child: ServiceCard(
       icon: icon,
       title: title,
-      desc: desc,
+      desc: desc, onTap: () {  },
     ),
   );
 }
