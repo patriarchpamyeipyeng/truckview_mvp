@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:truckview_mvp/pages/home.dart' ;
+
 import 'package:truckview_mvp/pages/forgot_password.dart';
 import 'package:truckview_mvp/pages/register.dart';
 import 'package:truckview_mvp/pages/main_screen.dart';
@@ -14,17 +14,24 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _hidePassword = true;
 
   bool isValidEmail(String email) {
-  return RegExp(
-    r'^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$',
-  ).hasMatch(email);
-}
+    return RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
+        .hasMatch(email);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A1F44), // Figma dark background
+      backgroundColor: const Color(0xFF0A1F44),
 
       body: Center(
         child: SingleChildScrollView(
@@ -34,7 +41,18 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                // 🔷 Logo / Title
+                const CircleAvatar(
+                  radius: 45,
+                  backgroundColor: Color(0xFFFF7A00),
+                  child: Icon(
+                    Icons.local_shipping,
+                    size: 45,
+                    color: Colors.white,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
                 const Text(
                   "TruckView Mobile",
                   style: TextStyle(
@@ -56,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 30),
 
-                // 🧾 Login Card
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -91,10 +108,22 @@ class _LoginPageState extends State<LoginPage> {
                       // Password
                       TextField(
                         controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
+                        obscureText: _hidePassword,
+                        decoration: InputDecoration(
                           labelText: "Password",
-                          prefixIcon: Icon(Icons.lock),
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _hidePassword = !_hidePassword;
+                              });
+                            },
+                          ),
                         ),
                       ),
 
@@ -111,76 +140,105 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           onPressed: () {
-  if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Please fill all fields")),
-    );
-    return;
-  }
+                            if (emailController.text.isEmpty ||
+                                passwordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please fill all fields"),
+                                ),
+                              );
+                              return;
+                            }
 
-  if (!isValidEmail(emailController.text)) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Enter a valid email")),
-    );
-    return;
-  }
-  if (passwordController.text.length < 6) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Password must be at least 6 characters"),
-      ),
-    );
-    return;
-  }
+                            if (!isValidEmail(emailController.text)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Enter a valid email"),
+                                ),
+                              );
+                              return;
+                            }
 
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const MainScreen()),
-  );
-},
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(fontSize: 16),
+                            if (passwordController.text.length < 6) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      "Password must be at least 6 characters"),
+                                ),
+                              );
+                              return;
+                            }
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MainScreen(),
+                              ),
+                            );
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.login, color: Colors.white),
+                              SizedBox(width: 8),
+                              Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
 
                       const SizedBox(height: 10),
 
-                      // Forgot password
                       TextButton(
                         onPressed: () {
-                            Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const ForgotPasswordPage(),
-    ),
-  );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ForgotPasswordPage(),
+                            ),
+                          );
                         },
                         child: const Text(
                           "Forgot Password?",
                           style: TextStyle(color: Color(0xFF0A1F44)),
                         ),
                       ),
+
                       Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don't have an account?"),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => RegisterPage(),
+                                ),
+                              );
+                            },
+                            child: const Text("Register"),
+                          ),
+                        ],
+                      ),
 
-    const Text("Don't have an account?"),
+                      const SizedBox(height: 15),
 
-    TextButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const RegisterPage(),
-          ),
-        );
-      },
-      child: const Text("Register"),
-    ),
-  ],
-),
+                      const Text(
+                        "Your satisfaction is our clarion call",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
                 ),

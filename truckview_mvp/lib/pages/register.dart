@@ -14,6 +14,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  bool _hidePassword = true;
+bool _hideConfirmPassword = true;
 
   bool isValidEmail(String email) {
     return RegExp(
@@ -28,19 +30,27 @@ class _RegisterPageState extends State<RegisterPage> {
 
       appBar: AppBar(
         backgroundColor: const Color(0xFF0A1F44),
-        title: const Text("Create Account"),
+                elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("Create Account",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
 
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
 
               const Text(
@@ -55,9 +65,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Full Name",
                   prefixIcon: Icon(Icons.person),
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
 
@@ -66,9 +82,15 @@ class _RegisterPageState extends State<RegisterPage> {
               TextField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: "Email",
                   prefixIcon: Icon(Icons.email),
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
 
@@ -77,34 +99,74 @@ class _RegisterPageState extends State<RegisterPage> {
               TextField(
                 controller: phoneController,
                 keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: "Phone Number",
                   prefixIcon: Icon(Icons.phone),
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
 
               const SizedBox(height: 15),
 
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  prefixIcon: Icon(Icons.lock),
-                ),
-              ),
+       TextField(
+  controller: passwordController,
+  obscureText: _hidePassword,
+  decoration: InputDecoration(
+    labelText: "Password",
+    prefixIcon: const Icon(Icons.lock),
+    filled: true,
+    fillColor: Colors.grey[100],  
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    suffixIcon: IconButton(
+      icon: Icon(
+        _hidePassword
+            ? Icons.visibility_off
+            : Icons.visibility,
+      ),
+      onPressed: () {
+        setState(() {
+          _hidePassword = !_hidePassword;
+        });
+      },
+    ),
+  ),
+),
 
               const SizedBox(height: 15),
 
-              TextField(
-                controller: confirmPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Confirm Password",
-                  prefixIcon: Icon(Icons.lock_outline),
-                ),
-              ),
-
+        TextField(
+  controller: confirmPasswordController,
+  obscureText: _hideConfirmPassword,
+  decoration: InputDecoration(
+    labelText: "Confirm Password",
+    prefixIcon: const Icon(Icons.lock_outline),
+    filled: true,
+    fillColor: Colors.grey[100],
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    suffixIcon: IconButton(
+      icon: Icon(
+        _hideConfirmPassword
+            ? Icons.visibility_off
+            : Icons.visibility,
+      ),
+      onPressed: () {
+        setState(() {
+          _hideConfirmPassword =
+              !_hideConfirmPassword;
+        });
+      },
+    ),
+  ),
+),
               const SizedBox(height: 25),
 
               SizedBox(
@@ -113,6 +175,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF7A00),
                     padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   onPressed: () {
 
@@ -183,10 +248,49 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: const Text("Register"),
                 ),
               ),
+                 const SizedBox(height: 15),
+
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+
+    const Text(
+      "Already have an account?",
+    ),
+
+    TextButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoginPage(),
+          ),
+        );
+      },
+      child: const Text(
+        "Login",
+        style: TextStyle(
+          color: Color(0xFFFF7A00),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  ],
+),
+              
             ],
           ),
         ),
       ),
     );
   }
+  @override
+void dispose() {
+  nameController.dispose();
+  emailController.dispose();
+  phoneController.dispose();
+  passwordController.dispose();
+  confirmPasswordController.dispose();
+  super.dispose();
+}
 }

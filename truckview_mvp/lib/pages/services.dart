@@ -136,7 +136,7 @@ class ServiceCard extends StatelessWidget {
     super.key,
     required this.icon,
     required this.title,
-    required this.desc,
+    required this.desc, required Null Function() onTap,
   });
 
   @override
