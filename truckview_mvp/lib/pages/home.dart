@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:truckview_mvp/pages/contact.dart';
-import 'package:truckview_mvp/pages/login.dart';
-import 'package:truckview_mvp/pages/profile.dart';
-import 'package:truckview_mvp/pages/services.dart';
-import 'package:truckview_mvp/pages/request_service.dart';
+
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -63,7 +59,6 @@ class HomePage extends StatelessWidget {
 
     const SizedBox(height: 20),
 
-            // Service cards (Figma style)
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -161,113 +156,6 @@ class HomeCard extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
-      ),
-    );
-  }
-}
-class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            const SizedBox(height: 20),
-
-            const Text(
-              "Welcome Back 👋",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 5),
-
-            const Text(
-              "We fix all vehicle types!",
-              style: TextStyle(color: Colors.white70),
-            ),
-
-            const SizedBox(height: 25),
-
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              children: [
-
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ServicesPage(),
-                      ),
-                    );
-                  },
-                  child: const HomeCard(
-                    icon: Icons.engineering,
-                    title: "Engine Repair",
-                  ),
-                ),
-
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RequestService(),
-                      ),
-                    );
-                  },
-                  child: const HomeCard(
-                    icon: Icons.car_repair,
-                    title: "Diagnostics",
-                  ),
-                ),
-
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RequestService(),
-                      ),
-                    );
-                  },
-                  child: const HomeCard(
-                    icon: Icons.local_shipping,
-                    title: "Towing",
-                  ),
-                ),
-
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RequestService(),
-                      ),
-                    );
-                  },
-                  child: const HomeCard(
-                    icon: Icons.battery_charging_full,
-                    title: "Battery",
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
