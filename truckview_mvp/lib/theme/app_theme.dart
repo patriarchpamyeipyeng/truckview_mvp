@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
-class AppTheme {
-  static const Color primaryBlue = Color(0xFF0A1F44);
-  static const Color accentOrange = Color(0xFFFF7A00);
-  static const Color background = Color(0xFFF8F9FA);
+class AppColors {
+  static const primary = Color(0xFF0F1B2D);
+  static const orange = Color(0xFFF97316);
+  static const success = Color(0xFF10B981);
+  static const grey = Color(0xFFA3A3A3);
+  static const white = Colors.white;
+  static const background = Color(0xFFF8F9FA);
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: primaryBlue,
+    primaryColor: primary,
     scaffoldBackgroundColor: background,
     fontFamily: 'Poppins',
 
     colorScheme: const ColorScheme.light(
-      primary: primaryBlue,
-      secondary: accentOrange,
+      primary: primary,
+      secondary: orange,
     ),
 
     appBarTheme: const AppBarTheme(
-      backgroundColor: primaryBlue,
+      backgroundColor: primary,
       foregroundColor: Colors.white,
       centerTitle: true,
       elevation: 0,
@@ -33,7 +36,7 @@ class AppTheme {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: accentOrange,
+        backgroundColor: orange,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
