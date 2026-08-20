@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-
-import 'home.dart';
-import 'services.dart';
-import 'request_service.dart';
-import 'contact.dart';
-import 'profile.dart';
+import 'package:truckview_mvp/theme/app_theme.dart';
+import 'package:truckview_mvp/pages/home.dart';
+import 'package:truckview_mvp/pages/services.dart';
+import 'package:truckview_mvp/pages/request_service.dart'; // For the quick book action
+import 'package:truckview_mvp/pages/contact.dart';
+import 'package:truckview_mvp/pages/profile.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int currentIndex = 0;
+  int _currentIndex = 0;
 
-  final pages = const [
+  // The 4 main tabs of your application
+  final List<Widget> _pages = const [
     HomePage(),
     ServicesPage(),
-    RequestService(),
     ContactPage(),
     ProfilePage(),
   ];
@@ -27,108 +27,104 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: pages[currentIndex],
+      backgroundColor: AppTheme.darkBackground,
+      // Body displays the selected page dynamically
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
       ),
-
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(12),
-        padding: const EdgeInsets.symmetric(vertical: 10),
+      
+      // Clean custom Floating Action Button for emergency/quick booking
+      floatingActionButton: Container(
+        height: 56,
+        width: 56,
         decoration: BoxDecoration(
-          color: const Color(0xFF0A1F44),
-          borderRadius: BorderRadius.circular(20),
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [AppTheme.primaryOrange, Colors.deepOrangeAccent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: AppTheme.primaryOrange.withOpacity(0.4),
               blurRadius: 10,
-              offset: const Offset(0, 5),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
-
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-
-          _buildNavItem(Icons.home, "Home", 0),
-_buildNavItem(Icons.build, "Services", 1),
-
-const SizedBox(width: 50),
-
-_buildNavItem(Icons.contact_phone, "Contact", 3),
-_buildNavItem(Icons.person, "Profile", 4),
-          ],
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RequestServicePage()),
+            );
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Icons.add, color: Colors.white, size: 28),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-  backgroundColor: const Color(0xFFFF7A00),
-  elevation: 8,
-  child: const Icon(
-    Icons.add,
-    color: Colors.white,
-    size: 32,
-  ),
-  onPressed: () {
-    setState(() {
-      currentIndex = 2;
-    });
-  },
-),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-floatingActionButtonLocation:
-    FloatingActionButtonLocation.centerDocked,
-    );
-  }
-
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    bool isActive = currentIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          currentIndex = index;
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      // Sleek Floating Bottom Navigation Bar
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         decoration: BoxDecoration(
-          color: isActive
-              ? const Color(0xFFFF7A00).withOpacity(0.2)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-
-            AnimatedScale(
-              duration: const Duration(milliseconds: 200),
-              scale: isActive ? 1.2 : 1.0,
-              child: Icon(
-                icon,
-                color: isActive
-                    ? const Color(0xFFFF7A00)
-                    : Colors.white70,
-              ),
-            ),
-
-            const SizedBox(height: 4),
-
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 11,
-                color: isActive
-                    ? const Color(0xFFFF7A00)
-                    : Colors.white70,
-                fontWeight:
-                    isActive ? FontWeight.bold : FontWeight.normal,
-              ),
+          color: AppTheme.surfaceCard,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppTheme.surfaceCardBorder, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: AppTheme.primaryOrange,
+            unselectedItemColor: AppTheme.textMuted,
+            selectedFontSize: 12,
+            unselectedFontSize: 11,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4),
+                  child: Icon(Icons.home_rounded),
+                ),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4),
+                  child: Icon(Icons.build_rounded),
+                ),
+                label: 'Services',
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4),
+                  child: Icon(Icons.support_agent_rounded),
+                ),
+                label: 'Contact',
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(bottom: 4),
+                  child: Icon(Icons.person_rounded),
+                ),
+                label: 'Profile',
+              ),
+            ],
+          ),
         ),
       ),
     );

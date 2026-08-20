@@ -1,291 +1,236 @@
 import 'package:flutter/material.dart';
-import 'services.dart';
-import 'request_service.dart';
-
+import 'package:truckview_mvp/theme/app_theme.dart';
+import 'package:truckview_mvp/pages/request_service.dart';
+import 'package:truckview_mvp/pages/services.dart';
+import 'package:truckview_mvp/pages/call_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A1F44),
-
+      // SafeArea prevents content from hiding under phone notches or status bars
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-
-            // 🔵 HEADER
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        // SingleChildScrollView makes the dashboard scrollable vertically
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // --- 1. HEADER SECTION ---
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
-                  Text(
-                    "Welcome Back 👋",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Truck-View Global Ent.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.primaryOrange,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Welcome back, Blaze!',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.textWhite,
+                        ),
+                      ),
+                    ],
                   ),
-
-                  SizedBox(height: 5),
-
-                  Text(
-                    "Your satisfaction is our clarion call",
-                    style: TextStyle(color: Colors.black54),
+                  // Notification / Emergency Quick Bell
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CallPage()),
+                      );
+                    },
+                    icon: const Icon(Icons.notifications_active, color: AppTheme.primaryOrange),
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppTheme.surfaceCard,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(color: AppTheme.surfaceCardBorder),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 24),
 
-            const SizedBox(height: 20),
-
-            // 🔴 QUICK ACTION CTA (NEW — makes UI feel alive)
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const RequestService(),
-                  ),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(18),
+              // --- 2. HERO BANNER CARD ---
+              Container(
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF7A00),
-                  borderRadius: BorderRadius.circular(18),
+                  gradient: LinearGradient(
+                    colors: [AppTheme.primaryOrange, AppTheme.primaryOrange.withOpacity(0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      'Your Vehicle. Our Expertise. Simplified.',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Book a certified mobile mechanic or request emergency roadside rescue in under 2 minutes.',
+                      style: TextStyle(fontSize: 12, color: Colors.white70),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RequestServicePage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: AppTheme.primaryOrange,
+                      ),
+                      child: const Text('Book a Service Now'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 28),
 
-                    Icon(Icons.flash_on, color: Colors.white, size: 30),
+              // --- 3. QUICK STATS ROW ---
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildStatCard('6+', 'Service Types'),
+                  _buildStatCard('6', 'Vehicle Types'),
+                  _buildStatCard('100%', 'Certified'),
+                ],
+              ),
+              const SizedBox(height: 28),
 
-                    SizedBox(width: 12),
+              // --- 4. FEATURED SERVICES SECTION HEADER ---
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Featured Services',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textWhite,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ServicesPage()),
+                      );
+                    },
+                    child: const Text(
+                      'View All',
+                      style: TextStyle(color: AppTheme.primaryOrange, fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
 
-                    Expanded(
+              // Featured Service Card (General Maintenance preview)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceCard,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.surfaceCardBorder),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryOrange.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.build, color: AppTheme.primaryOrange),
+                    ),
+                    const SizedBox(width: 14),
+                    const Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Quick Request",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                            'General Maintenance',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: 2),
                           Text(
-                            "Tap to request a mechanic instantly",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
+                            'Routine car servicing & breakdown prevention',
+                            style: TextStyle(color: AppTheme.textMuted, fontSize: 11),
                           ),
                         ],
+                      ),
+                    ),
+                    const Text(
+                      '₦35,000',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.primaryOrange,
+                        fontSize: 15,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-
-            const SizedBox(height: 25),
-
-            const Text(
-              "Quick Services",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-
-              childAspectRatio: 1.1,
-
-              children: [
-
-                ServiceCard(
-                  title: "Engine Repair",
-                  icon: Icons.settings,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ServicesPage(),
-                      ),
-                    );
-                  }, desc: ' Full diagnostics & repair',
-                ),
-
-                ServiceCard(
-                  title: "Diagnostics",
-                  icon: Icons.car_repair,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RequestService(),
-                      ),
-                    );
-                  }, desc: ' Computer scanning & analysis',
-                ),
-
-                ServiceCard(
-                  title: "Towing",
-                  icon: Icons.local_shipping,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RequestService(),
-                      ),
-                    );
-                  }, desc: '24/7 emergency towing',
-                ),
-
-                ServiceCard(
-                  title: "Battery",
-                  icon: Icons.battery_charging_full,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RequestService(),
-                      ),
-                    );
-                  }, desc: 'Replacement & jumpstart',
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 25),
-
-            // 🟣 RECENT REQUESTS (NOW BETTER POSITIONED)
-            const Text(
-              "Recent Requests",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: const Row(
-                    children: [
-
-                      Icon(Icons.build_circle,
-                          color: Color(0xFFFF7A00)),
-
-                      SizedBox(width: 10),
-
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Engine Inspection",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Pending • Today",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Icon(Icons.arrow_forward_ios, size: 14),
-                    ],
-                  ),
-                );
-              },
-            ),
-
-            const SizedBox(height: 25),
-
-            // 🔴 EMERGENCY CARD (LAST — like real apps)
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF7A00), Color(0xFFFF5A00)],
-                ),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Column(
-                children: [
-
-                  Icon(
-                    Icons.support_agent,
-                    size: 45,
-                    color: Colors.white,
-                  ),
-
-                  SizedBox(height: 10),
-
-                  Text(
-                    "Need Immediate Assistance?",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-
-                  SizedBox(height: 5),
-
-                  Text(
-                    "Call or request help instantly anytime.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white70,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  // Helper method to keep UI code clean for stat cards
+  Widget _buildStatCard(String value, String label) {
+    return Container(
+      width: 105,
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceCard,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppTheme.surfaceCardBorder),
+      ),
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.primaryOrange,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
