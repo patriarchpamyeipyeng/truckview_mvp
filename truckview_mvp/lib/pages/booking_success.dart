@@ -1,88 +1,119 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'package:truckview_mvp/theme/app_theme.dart';
+import 'package:truckview_mvp/pages/main_screen.dart'; // Or your home route
 
 class BookingSuccessPage extends StatelessWidget {
-  final String name;
-  final String service;
+  final String serviceName;
+  final String vehicleType;
+  final String location;
+  final double price;
 
   const BookingSuccessPage({
-    super.key,
-    required this.name,
-    required this.service,
-  });
+    Key? key,
+    required this.serviceName,
+    required this.vehicleType,
+    required this.location,
+    required this.price,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A1F44),
-
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              const Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 80,
-              ),
-
-              const SizedBox(height: 15),
-
-              const Text(
-                "Booking Successful!",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              // Success Icon Container
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryOrange.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_circle,
+                  color: AppTheme.primaryOrange,
+                  size: 64,
                 ),
               ),
-
-              const SizedBox(height: 10),
-
-              Text(
-                "Hello $name,\nYour request for '$service' has been received.",
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 20),
-
+              const SizedBox(height: 24),
+              
               const Text(
-                "TruckView will contact you shortly 🚛",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black54),
+                'Booking Confirmed!',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.textWhite,
+                ),
               ),
+              const SizedBox(height: 8),
+              const Text(
+                'Your service request has been successfully dispatched to our certified mobile mechanics.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppTheme.textMuted, fontSize: 14),
+              ),
+              const SizedBox(height: 32),
 
-              const SizedBox(height: 20),
+              // Booking Details Card
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceCard,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.surfaceCardBorder),
+                ),
+                child: Column(
+                  children: [
+                    _buildDetailRow('Service', serviceName),
+                    const Divider(color: AppTheme.surfaceCardBorder, height: 24),
+                    _buildDetailRow('Vehicle Type', vehicleType),
+                    const Divider(color: AppTheme.surfaceCardBorder, height: 24),
+                    _buildDetailRow('Location', location),
+                    const Divider(color: AppTheme.surfaceCardBorder, height: 24),
+                    _buildDetailRow('Total Cost', '₦${price.toStringAsFixed(0)}', isPrice: true),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
 
+              // Action Buttons
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF7A00),
-                  ),
                   onPressed: () {
+                    // Navigate back to MainScreen / Home
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const HomePage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => const MainScreen()),
                       (route) => false,
                     );
                   },
-                  child: const Text("Back to Home"),
+                  child: const Text('Back to Home'),
                 ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, {bool isPrice = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(color: AppTheme.textMuted, fontSize: 14)),
+        Text(
+          value,
+          style: TextStyle(
+            color: isPrice ? AppTheme.primaryOrange : AppTheme.textWhite,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
+      ],
     );
   }
 }

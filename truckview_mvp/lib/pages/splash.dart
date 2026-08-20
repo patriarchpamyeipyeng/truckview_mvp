@@ -1,107 +1,90 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'package:truckview_mvp/theme/app_theme.dart';
+import 'package:truckview_mvp/pages/login.dart'; // Or MainScreen depending on your flow
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+class SplashPage extends StatefulWidget {
+  const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToNextScreen();
+  }
+
+  // Function to wait for 3 seconds, then move to the Login/Home screen
+  void _navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 3));
+    
+    // Check if the widget is still mounted in the tree before navigating (best practice)
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A1F44),
+      backgroundColor: AppTheme.darkBackground,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-              const Icon(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Brand Logo Icon Container
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryOrange.withOpacity(0.15),
+                shape: BoxShape.circle,
+                border: Border.all(color: AppTheme.primaryOrange, width: 2),
+              ),
+              child: const Icon(
                 Icons.local_shipping,
-                size: 100,
-                color: Colors.orange,
+                size: 64,
+                color: AppTheme.primaryOrange,
               ),
-
-              const SizedBox(height: 20),
-
-              const Text(
-                "TruckView Mobile",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(height: 24),
+            
+            // App Title matching the web platform
+            const Text(
+              'TRUCK-VIEW',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textWhite,
+                letterSpacing: 2.0,
               ),
-
-              const SizedBox(height: 10),
-
-              const Text(
-                "We Fix All Vehicle Types!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
-                ),
+            ),
+            const SizedBox(height: 8),
+            
+            const Text(
+              'Global Ent. • Abuja',
+              style: TextStyle(
+                fontSize: 13,
+                color: AppTheme.primaryOrange,
+                fontWeight: FontWeight.w600,
               ),
+            ),
+            const SizedBox(height: 48),
 
-              const SizedBox(height: 8),
-
-              const Text(
-                "Your Satisfaction Is Our Clarion Call",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 14,
-                ),
+            // Loading indicator to show activity while waiting
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                color: AppTheme.primaryOrange,
+                strokeWidth: 2.5,
               ),
-
-              const SizedBox(height: 40),
-
-              const CircularProgressIndicator(
-                color: Colors.orange,
-              ),
-
-              const SizedBox(height: 40),
-
-              SizedBox(
-                width: 220,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    "Get Started",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              const Text(
-                "Powered by TruckView Enterprise",
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
